@@ -13,8 +13,28 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Cache Python dependencies
+      - name: Cache Python dependencies
+        uses: actions/cache@v4
+        id: python-cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -26,6 +46,8 @@ jobs:
           pip install flask
           pip install python-dotenv
           pip install python-dateutil
+        uses: actions/cache@v4
+        id: python-cache
 
       - name: Format with Black
         run: |
@@ -36,6 +58,20 @@ jobs:
         run: |
           python -m unittest discover -s app_python/tests -t . -v
 
+      # Security checks
+      - name: Run Snyk vulnerability check
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+        continue-on-error: true
+
+      - name: Upload Snyk results to Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: snyk.sarif
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -43,7 +79,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build and push Docker image
-        run: |
-          cd app_python
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/morozov_devops_webapp .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/morozov_devops_webapp
+        uses: docker/build-push-action@v4
+        with:
+          context: ./app_python
+          file: ./app_python/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/morozov_devops_webapp:latest
