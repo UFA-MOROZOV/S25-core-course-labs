@@ -12,7 +12,7 @@ web_app = Flask(__name__)
 @web_app.route("/")
 def index():
     """
-    Returns html page with current time in Moscow
+    Returns rendered html page with current time in Moscow
     """
     utc_now = datetime.now(timezone.utc)
     moscow_tz = timezone(timedelta(hours=3))

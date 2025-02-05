@@ -44,5 +44,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/morozov_devops_webapp .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/morozov_devops_webapp .
           docker push ${{ secrets.DOCKERHUB_PASSWORD }}/morozov_devops_webapp
