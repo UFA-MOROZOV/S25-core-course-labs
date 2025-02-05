@@ -55,7 +55,6 @@ jobs:
         run: |
           python -m unittest discover -s app_python/tests -t . -v
 
-      # Security checks
       - name: Run Snyk vulnerability check
         uses: snyk/actions/python@master
         env:
