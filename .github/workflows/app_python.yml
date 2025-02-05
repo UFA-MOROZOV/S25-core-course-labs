@@ -44,5 +44,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
+          cd app_python
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/morozov_devops_webapp .
           docker push ${{ secrets.DOCKERHUB_PASSWORD }}/morozov_devops_webapp

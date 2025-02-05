@@ -1,5 +1,5 @@
 """
-This is a python web application using flask framework that shows current time in Moscow.
+This is a python web application using Flask framework that shows current time in Moscow.
 """
 
 from datetime import datetime, timezone, timedelta
