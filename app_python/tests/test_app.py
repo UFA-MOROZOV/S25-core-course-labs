@@ -38,7 +38,7 @@ class TestApp(unittest.TestCase):
 
     def test_time(self):
         """
-        Test Moscow time for correctness
+        Test time for correctness
         """
         response = self.app.get("/")
 
