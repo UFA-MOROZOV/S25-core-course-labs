@@ -51,3 +51,11 @@ This application also is containerised and there are two options of running cont
     docker pull leha0704/morozov_devops_webapp:latest
     docker run -p 5000:5000 -d leha0704/morozov_devops_webapp:latest
     ```
+
+## Unit tests
+
+- You can test web application using unit tests:
+
+    ```bash
+    python -m unittest discover -s app_python/tests -t . -v
+    ```
