@@ -38,7 +38,7 @@ class TestApp(unittest.TestCase):
 
     def test_time(self):
         """
-        Pytest test Moscow time for correctness
+        Test Moscow time for correctness
         """
         response = self.app.get("/")
 
@@ -46,7 +46,6 @@ class TestApp(unittest.TestCase):
         moscow_tz = timezone(timedelta(hours=3))
         moscow_time = utc_now.astimezone(moscow_tz)
 
-        # Processing will take time, so milliseconds should be ignored.
         time_to_check = str(moscow_time).split(".", maxsplit=1)[0]
         self.assertIn(time_to_check, response.text)
 
