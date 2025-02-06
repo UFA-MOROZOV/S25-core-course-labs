@@ -7,10 +7,10 @@ variable "token" {
 variable "name" {
   description = "Name of the repository"
   type        = string
-  default     = "my-repo"
+  default     = "S25-core-course-labs"
 }
 
 variable "default_branch" {
   description = "Default branch"
-  default     = "main"
+  default     = "feature/lab4"
 }
