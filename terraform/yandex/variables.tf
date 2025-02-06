@@ -1,6 +1,6 @@
 variable "yc_token" {
   type    = string
-  default = "t1.9euelZqSks-ayMyLjs6PlI_JkMiJm-3rnpWay5iMy4uejMuQk8vKmJWNj8vl8_cpDXBC-e89fHs__d3z92k7bUL57z18ez_9zef1656VmoySnJeUy5vHj4mQyZ6Lzo-R7_zN5_XrnpWayYuKypORnIuWz8-LzceSlJjv_cXrnpWajJKcl5TLm8ePiZDJnovOj5E.DY7Hw39MX980gEolvuACAauENiD7oN14G4s0barxiLAGjCrSEglS8_Gp5i8_uyscelN5EJ1Ef9ENuirVhQWbCA"
+  default = ""
 }
 
 variable "folder_id" {
