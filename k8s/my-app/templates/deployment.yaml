@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "myapp"
+      annotations:
+        vault.hashicorp.com/agent-inject-secret-myapp: "secret/data/myapp"
+    spec:
+      serviceAccountName: internal-app
+      containers:
+        - name: my-container
+          image: leha0704/morozov_devops_webapp:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: my-helm-secret
+                  key: username
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-helm-secret
+                  key: password
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: visits-volume
+              mountPath: /data
+      volumes:
+        - name: config-volume
+          configMap:
+            name: app-config
+        - name: visits-volume
+          emptyDir: {}
